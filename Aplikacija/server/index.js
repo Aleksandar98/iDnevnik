@@ -10,8 +10,6 @@ const path = require("path");
 
 const flash = require('express-flash');
 
-//const Administrator = require('./Models/Administrator');
-
 //dodaj cripto async i nodemailer
 const async = require("async");
 const nodemailer = require("nodemailer");
@@ -27,7 +25,6 @@ mongoose.connect("mongodb+srv://aleksandar:databasetest@cluster0-k3chi.mongodb.n
 
 const app = express();
 
-//app.use(express.static(path.join(__dirname, "client","src","components")));
 app.use(express.static(path.join(__dirname, "/")));
 
 app.use(cors());
@@ -49,7 +46,49 @@ passport.use(new LocalStratrgy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Ucenik1.create({
+//     Ime: "Mario",
+//     Prezime: "Kovacevic",
+//     Jmbg: 1107998732469,
+//     DatumRodjenja: "11.07.1998",
+//     Adresa: "Djerdapska 55",
+//     Email: "mario@gmail.com",
+//     Razred: 4,
+//     Odeljenje: 1,
+//     Vladanje: 5,
+//     Napomene: [{ Tekst: "Mario je doneo stetne lekove na casu istorije sa Danilom Terzicem", Datum: "22.11.2019." }, { Tekst: "Mario sutira milu mirovic", Datum: "1.6.2019." },{ Tekst: "Zdravko baca topovski u ucionicu", Datum: "1.6.2019." },{ Tekst: "Nikola maze sladoled po zidovima", Datum: "1.6.2019." },{ Tekst: "Zdravko maze krem po zidovima", Datum: "1.6.2019." }],
+//     Dogadjaji: [{ Tekst: "Ptrebno je platiti djacki dinar u iznosu od 300rsd", Datum: "3.4.2020" }, { Tekst: "Potrebno je platiti djacki dinar u iznosu od 400rsd", Datum: "4.4.2019" }],
+//     Raspored: [{ Dan: "Ponedeljak", Predmeti: ["Srpski", "Engleski", "Matematika", "Istorija", "Fizicko", "Hemija","Psihologija"] }, { Dan: "Utorak", Predmeti: ["Engleski", "Engleski", "Hemija", "Istorija", "Biologija", "Francuski"] }, { Dan: "Sreda", Predmeti: ["Informatika", "Informatika", "Matematika", "Istorija", "Fizicko"] }, { Dan: "Cetvrtak", Predmeti: ["Geografija", "Srpski", "Matematika", "Matematika", "Matematika"] }, { Dan: "Petak", Predmeti: ["BIologija", "Hemija", "Fizika", "Istorija", "Fizicko"] }], 
+//     Izostanci: [{ Razred: 4, Polugodiste: "drugo", Tip: "Opravdani", Predmet: "Istorija", Datum: "19.2.2020" }, { Razred: 4, Polugodiste: "drugo", Tip: "Neopravdani", Predmet: "Hemija", Datum: "20.2.2020" },{ Razred: 4, Polugodiste: "drugo", Tip: "Neopravdani", Predmet: "Engleski", Datum: "20.2.2020" },{ Razred: 2, Polugodiste: "prvo", Tip: "Neopravdani", Predmet: "Fizika", Datum: "20.2.2020" },{ Razred: 4, Polugodiste: "drugo", Tip: "Na cekanju", Predmet: "Biologija", Datum: "20.2.2020" }],
+//     Predmeti: [{ Naziv: "Istorija", Ocene: [{ Razred: 4, Polugodiste: "prvo", Vrednost: 5 }, { Razred: 4, Polugodiste: "prvo", Vrednost: 3 }]},{ Naziv: "Engleski", Ocene: [{ Razred: 4, Polugodiste: "prvo", Vrednost: 2 }, { Razred: 4, Polugodiste: "prvo", Vrednost: 3 }]},{ Naziv: "Informatika", Ocene: [{ Razred: 4, Polugodiste: "drugo", Vrednost: 5 }, { Razred: 4, Polugodiste: "prvo", Vrednost: 4 }]}],
+//     Post: [{TipPosta:"Ostalo", Sadrzaj:"Prijava za ekskurziju obavice se u petak 22.5.2020.",Datum:"3.6.2020"},{TipPosta:"Domaci", Sadrzaj:"Potrebno je procitati devetu lekciju iz biologije",Datum:"3.6.2020"},{TipPosta:"Test", Sadrzaj:"Test iz engleskog bice odlozen za sledeci ponedeljak",Datum:"3.6.2020"},{TipPosta:"Domaci", Sadrzaj:"Potrebno je procitati prvu lekciju iz hemije",Datum:"3.6.2020"},{TipPosta:"Vannastavne", Sadrzaj:"Dodatna nastava za takmicenje iz fizike bice 2.2.2020.",Datum:"3.6.2020"}]
+// }, function (err, ucenik) {
+//     if (err)
+//     console.log(err);
+// else {
+//     console.log("Novi ucenik dodat u bazu");
+//     console.log(ucenik);
+// }
 
+// })
+
+
+Roditelj.create({
+    Ime: "Sonja",
+    Prezime: "Jovanovic",
+    Email: "slavica@gmail.com",
+    Telefon: "0637676851",
+    Deca: "5ea5a2780b12b62bc87a2d70"
+}, function (err, rod) {
+        if (err)
+        console.log(err);
+    else {
+        console.log("Novi roditelj dodat u bazu");
+       // console.log(ucenik);
+    }
+    
+    })
+    
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated())
