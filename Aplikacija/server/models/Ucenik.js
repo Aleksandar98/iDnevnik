@@ -1,72 +1,68 @@
-var mongoose = require("mongoose");
-const { Schema } = mongoose;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const NapomenaSchema = new Schema({
     Tekst: String,
-    Datum: String,
-    //Ucenik: UcenikSchema
+    Datum: String
 })
-
 const DogadjajSchema = new Schema({
     Tekst: String,
-    Datum: String,
-    //Ucenik: UcenikSchema
+    Datum: String
 })
-
 const DanSchema = new Schema({
     Dan: String,
     Predmeti: [String]
 })
-
-/*const RasporedSchema = new Schema({
-    Dani: [DanSchema]
-})*/
-
 const IzostanakSchema = new Schema({
     Razred: Number,
     Polugodiste: String,
     Tip: String,
     Predmet: String,
-    Datum: String,
-    //Ucenik: UcenikSchema
+    Datum: String
 })
-
 const OcenaSchema = new Schema({
     Razred: Number,
     Polugodiste: String,
-    Vrednost: Number,
-    //Predmet: [PredmetSchema]
-}) 
-
+    Vrednost: Number
+})
 const PredmetSchema = new Schema({
     Naziv: String,
-    Ocene: [OcenaSchema],
-    //Ucenik: UcenikSchema
+    Ocene: [OcenaSchema]
 })
-
-const ForumPostSchema = new Schema({ // jedan post na forumu, TipPosta moze biti domaci,test,vannastavna,ostalo
+const ForumPostSchema = new Schema({
     TipPosta: String,
     Sadrzaj: String,
-    Datum: String
+    Datum: String,
+    ProfesorIme: String
 })
-
-
-const Ucenik1Schema = new Schema({
+const ProsekSchema = new Schema({
+    Razred: Number,
+    Polugodiste: String,
+    Vrednost:Number
+})
+const UcenikSchema = new Schema({
     Ime: String,
     Prezime: String,
     Jmbg: String,
     DatumRodjenja: String,
     Adresa: String,
     Email: String,
-    Razred: Number,
+    Razred:Number,
     Odeljenje: Number,
     Vladanje: Number,
+    Pol: String,
     Napomene: [NapomenaSchema],
     Dogadjaji: [DogadjajSchema],
     Raspored: [DanSchema],
     Izostanci: [IzostanakSchema],
     Predmeti: [PredmetSchema],
-    Post: [ForumPostSchema]
-})
+    Post: [ForumPostSchema],
+    Prosek: [ProsekSchema],
+    Razredni: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Profesor"
+    }
+});
 
-module.exports= mongoose.model('Ucenik1', Ucenik1Schema);
+const User = mongoose.model('Ucenik', UcenikSchema);
+module.exports = User;

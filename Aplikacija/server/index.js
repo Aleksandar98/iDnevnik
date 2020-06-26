@@ -5,17 +5,20 @@ const bodyParser = require('body-parser');
 const User =     require('./models/User');
 const LocalStratrgy = require("passport-local");
 const cors = require('cors')
-
+const webpush = require("web-push");
 const path = require("path");
-
 const flash = require('express-flash');
+const Roditelj = require('./models/Roditelj');
+const Profesor = require('./models/Profesor');
+const Ucenik = require('./models/Ucenik');
+//const Administrator = require('./Models/Administrator');
 
 //dodaj cripto async i nodemailer
 const async = require("async");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 
-mongoose.connect("mongodb+srv://aleksandar:databasetest@cluster0-k3chi.mongodb.net/test?retryWrites=true&w=majority").then(() => {
+mongoose.connect("mongodb+srv://aleksandar:databasetest@cluster0-k3chi.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true  }).then(() => {
     console.log("Connected to Database");
     }).catch((err) => {
         console.log("Not Connected to Database ERROR! ", err);
@@ -25,11 +28,15 @@ mongoose.connect("mongodb+srv://aleksandar:databasetest@cluster0-k3chi.mongodb.n
 
 const app = express();
 
+//app.use(express.static(path.join(__dirname, "client","src","components")));
 app.use(express.static(path.join(__dirname, "/")));
 
 app.use(cors());
 
 app.use(flash());
+
+app.use(bodyParser.json());
+
 
 app.use(bodyParser.urlencoded({extended:true}))
 
@@ -72,7 +79,7 @@ passport.deserializeUser(User.deserializeUser());
 
 // })
 
-
+/*
 Roditelj.create({
     Ime: "Sonja",
     Prezime: "Jovanovic",
@@ -87,8 +94,10 @@ Roditelj.create({
        // console.log(ucenik);
     }
     
-    })
-    
+    })*/
+    Profesor
+
+
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated())
@@ -96,7 +105,26 @@ function isLoggedIn(req, res, next){
    res.redirect("/");
 }
 
+// const publicVapidKey =
+//   "BDE02Lkq8qp45DZKE7R3HCp5Xg9OrM9lIGGZGJKb0eds3bC1B7BxRfU6daDCgBnwN6KDfeMVUOkfcbVSsJVcsv8";
+// const privateVapidKey = "uPXFArpzP6gv402YthYdHAf0yRqpKgLjn9CWlS-RNLY";
 
+// webpush.setVapidDetails(
+//     "mailto:test@test.com",
+//     publicVapidKey,
+//     privateVapidKey
+//   );
+
+  app.get("/worker.js", (req, res) => {
+    res.writeHead(201, {
+        'Content-Type': 'application/javascript'
+    });
+    res.sendFile(path.resolve(__dirname, "client", "src", "components" ,"/worker.js"));
+  });
+
+  app.get("/work/worker", (req, res) => {
+    res.send({ hi :'there'});
+  });
 
 app.get("/",(req,res)=>{
     req.flash('error_messages',"greskaaa");
@@ -134,17 +162,88 @@ app.get("/logout",(req,res)=>{
    res.redirect("http://localhost:3000/");
 });
 
+
+
+
+
+let UcenikModel = require('./models/User');
+app.post("/resetpass",(req,res)=>{
+
+    UcenikModel.findOne({ username: req.body.email }).then(ucenik =>{ 
+      if (ucenik) {
+
+      ucenik.setPassword(req.body.pass,()=>{
+        ucenik.save();
+        res.send('password reset successful');
+
+      });
+
+      }else{
+        res.send('user does not exist');
+      }
+    },(error)=>{console.log(error)})
+});
+
+
+
+const UcenikControl = require("./controllers/Ucenik1Controller");
+app.get("/Zdravko", UcenikControl.all);
+app.get("/Dete/:_id", UcenikControl.findById);
+app.get("/DeteEmail/:Email", UcenikControl.findByEmail);
+
+const RoditeljControl = require("./controllers/RoditeljController");
+app.get("/Roditelj", RoditeljControl.all);
+app.get("/Roditelj/:Email", RoditeljControl.findByEmail);
+app.get("/Roditelj/GetRoditeljByEmail/:Email", RoditeljControl.findByEmail);
+
+app.post('/vratiRoditelja', (req, res) => {
+  Roditelj.find({ Email: req.body.email }, (err, result) => {
+    if (err)
+    {
+      res.send(err);
+    }
+    else
+    {
+      res.send(result[0]);
+    }
+  })
+})
+
+app.post('/vratiDete', (req, res) => {
+  Ucenik.find({ Email: req.body.email }, (err, result) => {
+    if (err)
+      res.send(err);
+    else
+      res.send(result[0]);
+  })
+})
+
+app.post('/Roditelj/PosaljiZahtev', (req, res) => {
+  Profesor.create({})
+})
+
+
 app.get("/api/current_user",(req,res)=>{
     res.send(req.user);
 })
 
+app.post("/subscribe", (req, res) => {
+    // Get pushSubscription object
+    const subscription = req.body;
+  
+    // Send 201 - resource created
+    res.status(201).json({});
+  
+    // Create payload
+    const payload = JSON.stringify({ title: "Push Test" });
+  
+    // Pass object into sendNotification
+    webpush
+      .sendNotification(subscription, payload)
+      .catch(err => console.error(err));
+  });
 
-  const UcenikControl = require("./controllers/UcenikController");
-app.get("/Zdravko", UcenikControl.all);
-app.get("/Dete/:_id", UcenikControl.findById);
-app.get("/DeteEmail/:Email", UcenikControl.findByEmail);
-const RoditeljControl = require("./controllers/RoditeljController");
-app.get("/Roditelj", RoditeljControl.all);
+
 
 app.get("/forgot",function(req,res){
     res.redirect("http://localhost:3000/Forget");
@@ -250,7 +349,7 @@ app.post('/reset/:token', function(req, res) {
         });
         var mailOptions = {
           to: user.email,
-          from: 'aleksandar19981@mail.com',
+          from: 'aleksandar19981@gmail.com',
           subject: 'Your password has been changed',
           text: 'Hello,\n\n' +
             'This is a confirmation that the password for your account ' + user.username + ' has just been changed.\n'
@@ -264,8 +363,13 @@ app.post('/reset/:token', function(req, res) {
       res.redirect('/');
     });
   });
+
+const profesorRouter = require('./controllers/ProfesorController');
+const ucenikRouter = require('./controllers/UcenikController');
+
+app.use('/profesori', profesorRouter);
+app.use('/ucenici', ucenikRouter);
+// app.get('/Profesor/:id',profesorRouter);
   
-
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);

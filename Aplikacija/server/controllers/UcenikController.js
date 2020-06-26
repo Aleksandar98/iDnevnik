@@ -1,4 +1,4 @@
-let UcenikModel = require('../models/Ucenik1');
+let UcenikModel = require('../models/Ucenik');
 
 let UcenikController = {
     all: async (req, res) => {
@@ -22,6 +22,11 @@ let UcenikController = {
         let sc = await UcenikModel.find({ _id: req.params._id });
         res.json(sc);
     }
+    // ,
+    // changePass: async (req, res) => {
+    //     let sc = await UcenikModel.find({ _id: req.params._id });
+    //     res.json(sc);
+    // }
 }
 
 module.exports = UcenikController;

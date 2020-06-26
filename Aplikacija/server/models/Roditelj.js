@@ -7,9 +7,10 @@ const RoditeljSchema = new Schema({
     Prezime: String,
     Email: String,
     Telefon: String,
+    Pol:String,
     Deca: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Ucenik1"
+        ref: "Ucenik"
     }
 })
 

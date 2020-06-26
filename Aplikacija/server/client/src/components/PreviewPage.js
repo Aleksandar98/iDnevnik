@@ -1,9 +1,12 @@
 import React, {Component} from "react";
-import { connect } from 'react-redux';
 import UcenikPage from './Ucenik/UcenikPage';
 import ProfesorPage from './Profesor/ProfesorPage';
 
 class PreviewPage extends Component{
+    constructor(props) {
+        super(props)
+
+    }
 
     renderContent(){
         if(this.props.response === null){
@@ -12,11 +15,11 @@ class PreviewPage extends Component{
         if(this.props.response === false){
             return <h1>Niste ulogovani</h1>
         }else{
-            if(this.props.response.type === "ucenik"){
+            if(this.props.response.type === "ucenik" || this.props.response.type==="roditelj"){
                 return <UcenikPage  ucenik={this.props.ucenik} response={this.props.response}/>
             }
             if(this.props.response.type === "profesor"){
-                return <ProfesorPage/>
+                return <ProfesorPage podaci={this.props.response}/>
             }
         return <h1>Neka greska</h1>
         }
