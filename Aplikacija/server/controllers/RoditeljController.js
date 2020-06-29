@@ -21,6 +21,10 @@ let RoditeljController = {
     findByEmail: async (req, res) => {
         let found = await RoditeljModel.find({ Email: req.params.Email })
         res.json(found);
+    },
+    nadjiPrekoDeteta: async (req, res) => {
+        let found = await RoditeljModel.find({ Deca: req.params.idDeteta});
+        res.json(found);
     }
     
 }

@@ -7,11 +7,11 @@ const RoditeljSchema = new Schema({
     Prezime: String,
     Email: String,
     Telefon: String,
-    Pol:String,
     Deca: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Ucenik"
-    }
+    },
+    Pol: String
 })
 
 module.exports = mongoose.model('Roditelj', RoditeljSchema);

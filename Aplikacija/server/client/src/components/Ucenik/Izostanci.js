@@ -149,6 +149,8 @@ class Izostanci extends Component{
         zah.Tip = "Poslat"; //vise nece da se prikazuje u tabeli
         let roditelj = this.state.Roditelj[0]._id;
         let dete = this.state.response[0]._id;
+        let imeDeteta= this.state.response[0].Ime;
+        let prezimeDeteta=this.state.response[0].Prezime;
         let zahtev;
         console.log(this.props.infoKorisnika);
         console.log(this.state.Roditelj);
@@ -157,6 +159,8 @@ class Izostanci extends Component{
         //let korsinikovEmail = this.props.infoKorisnika.username;
 
         zahtev = {
+            ImeDeteta: imeDeteta,
+            PrezimeDeteta: prezimeDeteta,
             RoditeljId: roditelj,
             DeteId: dete,
             Razred: r,
@@ -168,8 +172,8 @@ class Izostanci extends Component{
         }
         
         //this.getProfesor();
-
-       
+        //console.log(zahtev);
+        console.log(this.state.profa._id);
         axios.post("http://localhost:5000/profesori/primiZahtev/", {
             id_profe: this.state.profa._id,
             zahtev: zahtev

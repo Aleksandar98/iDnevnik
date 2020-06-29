@@ -24,8 +24,9 @@ import axios from 'axios';
 import Header2 from "./Header2";
 import Odeljenje from "./Profesor/Odeljenje";
 import Statistika from "./Profesor/Statistika";
-import Kalendar from './Profesor/Kalendar'
+import Prisutni from "./Profesor/Prisutni";
 import InfoiKontakt from './Ucenik/InfoiKontakt'
+import StranaZaOpravdavanje from './Profesor/StranaZaOpravdavanje'
 
 
 const Landing = () =>{
@@ -98,7 +99,7 @@ class App extends Component{
                         {!this.state.response ? <Header2/> : null}
                         <Route exact path="/" component={Glavna}> {this.state.response ? <Redirect to="/preview" /> : <Landing />}</Route> 
                         <Route exact path="/login" component={LoginForm}/>
-                        <Route exact path="/register" component={RegisterForm}/>
+                        {/* <Route exact path="/register" component={RegisterForm}/> */}
                         <Route exact path="/preview"   ucenik={this.state.ucenik} response={this.state.response} render={(props) => <PreviewPage {...props} response={this.state.response} />}/>
                         
                         
@@ -116,9 +117,10 @@ class App extends Component{
                         <Route  path="/Reset" component={Reset} />
 
 
-                        <Route path='/Odeljenje/:god/:ode/:pred' exact component={Odeljenje} />
-                        <Route path='/Statistika/:id' exact component={Statistika} />
-                        <Route path='/ZakaziRoditeljski' exact component={Kalendar} />
+                        <Route path='/Odeljenje/:god/:ode/:pred/:raz/:godR/:odeR' exact component={Odeljenje} />
+                        <Route path='/Statistika/:id/:predmet' exact component={Statistika} />
+                        <Route  path='/Prisutni/:god/:ode/:pred' exact component={Prisutni}/>
+                        <Route path='/StranaZaOpravdavanje/:god/:ode/:idprofe' exact component={StranaZaOpravdavanje} />
                     {/* <Footer /> */}
                     </div>
                 </BrowserRouter>

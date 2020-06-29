@@ -13,7 +13,6 @@ class Forum extends Component{
         }
         this.getRoditelj = this.getRoditelj.bind(this);
         this.getDete = this.getDete.bind(this);
-        //this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     componentDidMount() {
@@ -21,12 +20,7 @@ class Forum extends Component{
     }
 
     getRoditelj() {
-        // if (this.props.infoKorisnika.username != null)
-        // {
-        //     axios.post('http://localhost:5000/vratiRoditelja', { email: this.props.infoKorisnika.username })
-        //     .then(res => this.setState({ idDeteta: res.data.Deca }))
-        // .catch(err => console.log(err))
-        // }
+       
         if (this.props.infoKorisnika.username != null && this.props.infoKorisnika.type == "ucenik")
         {
             axios.post('http://localhost:5000/vratiDete', { email: this.props.infoKorisnika.username })
@@ -36,15 +30,6 @@ class Forum extends Component{
                 })
                 .catch(err => console.log(err))
         }
-
-       
-
-        // else if (this.props.infoKorisnika.username != null)
-        // {
-        //     axios.post('http://localhost:5000/vratiRoditelja', { email: this.props.infoKorisnika.username })
-        //     .then(res => this.setState({ idDeteta: res.data.Deca }))
-        // .catch(err => console.log(err))
-        // }
     }
 
     getDete() {
@@ -57,34 +42,34 @@ class Forum extends Component{
 
     sort(niz) {
         //let dogadjaji = this.state.response[0].Dogadjaji;
-        console.log(niz.length);
-        for (let i = 0; i < niz.length; i++)
-            console.log(niz[i].Datum);
+        // console.log(niz.length);
+        //for (let i = 0; i < niz.length; i++)
+            // console.log(niz[i].Datum);
         let i = 0;
         let j = 0;
         let f = 1;
         for (i = 0; i < niz.length-1 ; i++)
         {
-            console.log(niz[i]);
-            console.log("niz i datum "+niz[i].Datum);
+            // console.log(niz[i]);
+            // console.log("niz i datum "+niz[i].Datum);
             for (j = i+1; j < niz.length ; j++)
             {
                 f = 1;
-                console.log("Poredjujem");
-                console.log(niz[i].Datum);
-                console.log("sa");
-                console.log(niz[j].Datum);
+                // console.log("Poredjujem");
+                // console.log(niz[i].Datum);
+                // console.log("sa");
+                // console.log(niz[j].Datum);
                 let k = 0;
                 for ( k = 0; k< niz[i].Datum.length ; k++) {
-                    console.log(niz[i].Datum[k]);
-                    console.log(niz[j].Datum[k]);
+                    // console.log(niz[i].Datum[k]);
+                    // console.log(niz[j].Datum[k]);
                     if (niz[i].Datum[k] > niz[j].Datum[k])
                         f = 0;
                     if ( (parseInt(niz[i].Datum[k]) < parseInt(niz[j].Datum[k])) && f == 1) {
-                        console.log("USO");
-                        console.log("F " + f);
-                        console.log(niz[i].Datum[k]);
-                        console.log(niz[j].Datum[k]);
+                        // console.log("USO");
+                        // console.log("F " + f);
+                        // console.log(niz[i].Datum[k]);
+                        // console.log(niz[j].Datum[k]);
                         let pom = niz[i];
                         niz[i] = niz[j];
                         niz[j] = pom;
@@ -93,8 +78,8 @@ class Forum extends Component{
                 }
             }
         }
-        for (let i = 0; i < niz.length; i++)
-            console.log(niz[i].Datum);
+        // for (let i = 0; i < niz.length; i++)
+        //     console.log(niz[i].Datum);
     }
 
     render() {
@@ -123,18 +108,24 @@ class Forum extends Component{
             else if (p.TipPosta == "Vannastavne") {
                 VannastavnePost[VannastavnePost.length] = <tr>{td}</tr>
             }
-            // else {
-            //     OstaloPost[OstaloPost.length] = <tr>{td}</tr>
-            // }
+            
         });
 
 
 
         return (
-          <div className="MT">
-            <div >
-             <h2>Domaci zadaci</h2>
-              <table className="table  table-hover ">
+            <div className="MT panel-group " id="accordion">
+                
+                <div className="panel panel-default">
+                <div className="panel-heading">
+                <h4 className="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" >
+                    Domaci zadaci</a>
+                </h4>
+                </div>
+                <div id="collapse1" className="panel-collapse collapse  ">
+                    <div className="panel-body">
+                        <table className="table  table-hover ">
                     <thead >
                     <tr>
                     <th className ="datumfix">Datum</th>
@@ -146,11 +137,20 @@ class Forum extends Component{
                     {DomaciPost}
                   </tbody>
               </table>
-            </div>
-                
-            <div >
-                <h2>Testovi</h2>
-                <table className="table  table-hover ">
+                </div>
+                </div>
+                </div>
+
+                <div class="panel panel-default">
+                <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" >
+                    Testovi</a>
+                </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                        <table className="table  table-hover ">
                         <thead >
                             <tr>
                             <th className ="datumfix">Datum</th>
@@ -162,11 +162,20 @@ class Forum extends Component{
                       {TestPost}
                     </tbody>
                 </table>
-            </div>
-                
-                <div >
-                    <h2>Vannastavne aktivnosti</h2>
-              <table className="table  table-hover ">
+                </div>
+                </div>
+                </div>  
+
+                <div className="panel panel-default">
+                <div className="panel-heading">
+                <h4 className="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" >
+                    Vannastavne aktivnosti</a>
+                </h4>
+                </div>
+                <div id="collapse3" className="panel-collapse collapse in">
+                    <div className="panel-body">
+                    <table className="table  table-hover ">
                   <thead >
                         <tr>
                         <th className ="datumfix">Datum</th>
@@ -179,24 +188,14 @@ class Forum extends Component{
                   </tbody>
               </table>
                 </div>
-                
-                {/* <div >
-                    <h2>Ostalo</h2>
-              <table className="table  table-hover ">
-                  <thead className ="datumfix">
-                      
-                          <th>Datum</th>
-                          <th>Obavestenje</th>
-                      
-                  </thead>
-                  <tbody>
-                      {OstaloPost}
-                  </tbody>
-              </table>
-          </div> */}
+                </div>
+                </div>
+
+
       </div>
         )
     }
 }
 
 export default Forum
+                

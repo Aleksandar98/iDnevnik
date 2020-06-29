@@ -1,15 +1,17 @@
 const router = require('express').Router();
 const Profesor = require('../models/Profesor');
+const Ucenik = require('../models/Ucenik');
 
 router.post('/dodajProfesora', (req, res) => {
-    const Ime = req.body.ime;
-    const Prezime = req.body.prezime;
-    const Email = req.body.email;
-    const Predmet = req.body.predmet;
-    const Razredni = req.body.razredni;
-    const Odeljenja = req.body.odeljenja;
-    const Zahtevi = req.body.zahtevi;
-    let prof = new Profesor({Ime,Prezime,Email,Predmet,Razredni,Odeljenja,Zahtevi});
+    const ime = req.body.ime;
+    const prezime = req.body.prezime;
+    const email = req.body.email;
+    const predmet = req.body.predmet;
+    const razredni = req.body.razredni;
+    const odeljenja = req.body.odeljenja;
+    const zahtevi = req.body.zahtevi;
+    const pol = req.body.pol;
+    let prof = new Profesor({ime,prezime,email,predmet,razredni,odeljenja,zahtevi,pol});
     console.log(req);
     prof.save()
     .then(() => res.json(prof))
@@ -21,13 +23,6 @@ router.get('/vratiProfesore', (req, res) => {
     .then(profesori => res.send(profesori))
     .catch(err => res.status(400).json('Error: ' + err));
 })
-
-router.get('/Profesor/:_id', (req, res) => {
-    Profesor.findById(req.params._id)
-        .then(prof => res.send(prof))
-        .catch(err => console.log(err));
-})
-
 
 router.delete('/brisiProfesora/:id', (req, res) => {
     Profesor.findByIdAndDelete(req.params.id)  
@@ -53,21 +48,79 @@ router.post('/vratiProfesora', (req, res) => {
         }
     })
 })
-
-router.post('/primiZahtev', (req, res) => {
-  
-        Profesor.findByIdAndUpdate(req.body.id_profe,
-        { $push: { Zahtevi: [req.body.zahtev] } },
+router.post('/dodajDogadjaj', (req, res) => {
+    Ucenik.updateMany(
+        {Razred: req.body.razred , Odeljenje: req.body.odeljenje},
+        {$push: {Post: [req.body.obavestenje]}},
         (err, result) => {
-            if (err) {
-                res.json('error');
-            }
-            else {
-                res.json(result);
-            }
+            if(err) {
+                 res.json('error')
+                
+                } else {
+                            res.json(result);
+                        }
         }
     )
 })
+router.post('/zakaziRoditeljski', (req, res) => {
+    Ucenik.updateMany(
+        {Razred: req.body.razred1 , Odeljenje: req.body.odeljenje1},
+        {$push: {Dogadjaji: [req.body.dogadjaj]}},
+        (err, result) => {
+            if(err) {
+                 res.json('error')
+                
+                } else {
+                            res.json(result);
+                        }
+        }
+    )
+})
+router.get('/Profesor/:_id', (req, res) => {
+    Profesor.findById(req.params._id)
+        .then(prof => res.send(prof))
+        .catch(err => console.log(err));
+})
+router.post('/primiZahtev', (req, res) => {
+  
+    Profesor.findByIdAndUpdate(req.body.id_profe,
+    { $push: { zahtevi: [req.body.zahtev] } },
+    (err, result) => {
+        if (err) {
+            res.json('error');
+        }
+        else {
+            res.json(result);
+        }
+    }
+)
+})
+router.post('/odlukaOpravdanja', (req, res) => {
+    Ucenik.update({ _id: req.body.iducenika ,'Izostanci.Datum': req.body.datum }, {
+        'Izostanci.$.Tip': req.body.tip
+     },
+     (err, result) => {
+         if (err) {
+             console.log("LOSE POSLAt")
+             console.log(err);
+         } else {
+             console.log("LEPO POSLAt")
+             console.log(result);
+         }
+     }
+     )
+})
+
+router.post('/brisemIzostanak', (req, res) => {
+    console.log(req.body)
+    Profesor.update({ _id: req.body.idprofesora }, { "$pull": { "zahtevi": { "_id": req.body.idcelogzahteva } } }, { safe: true }, function(err, obj) {
+        if(err) {res.json("errrrrrrrrrrrrrrrr")}
+        else{
+            res.json('Uspeo sam')
+        }
+    });
+})
+
 
 
 module.exports = router;

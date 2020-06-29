@@ -25,7 +25,7 @@ class Header2 extends Component{
                 <ul className="nav navbar-nav navbar-right">
                 {/* <li><a><span className="glyphicon glyphicon-user"></span> {this.props.ucenik ? this.props.ucenik[0].Ime : ""}</a></li> */}
                     <li><a href="/login"><span className="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    <li><a href="/PromenaLozinke"><span className="glyphicon glyphicon-cog"></span> Zaboravljena lozinka</a></li>
+                    <li><a href="/Forget"><span className="glyphicon glyphicon-cog"></span> Zaboravljena lozinka</a></li>
                    
                 </ul>      
             </div>

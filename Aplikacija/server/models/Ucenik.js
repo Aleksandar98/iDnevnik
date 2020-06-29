@@ -27,13 +27,14 @@ const OcenaSchema = new Schema({
 })
 const PredmetSchema = new Schema({
     Naziv: String,
-    Ocene: [OcenaSchema]
+    Ocene: [OcenaSchema],
+    ZakljucnaOcena: [OcenaSchema]
 })
 const ForumPostSchema = new Schema({
     TipPosta: String,
     Sadrzaj: String,
     Datum: String,
-    ProfesorIme: String
+    ProfesorIme:String
 })
 const ProsekSchema = new Schema({
     Razred: Number,
@@ -50,7 +51,6 @@ const UcenikSchema = new Schema({
     Razred:Number,
     Odeljenje: Number,
     Vladanje: Number,
-    Pol: String,
     Napomene: [NapomenaSchema],
     Dogadjaji: [DogadjajSchema],
     Raspored: [DanSchema],
@@ -61,7 +61,8 @@ const UcenikSchema = new Schema({
     Razredni: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Profesor"
-    }
+    },
+    Pol: String
 });
 
 const User = mongoose.model('Ucenik', UcenikSchema);

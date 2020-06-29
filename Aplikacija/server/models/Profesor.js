@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const OdeljenjeSchema = new Schema({
-    Razred: Number,
-    Odeljenje: Number
+    razred: Number,
+    odeljenje: Number
 })
 const NaCekanjuSchema = new Schema({
     RoditeljId: {
@@ -16,21 +16,23 @@ const NaCekanjuSchema = new Schema({
     },
     Razred: Number,
     Polugodiste: String,
-    Tip:String,
+    Tip: String,
     Predmet: String,
     Datum: String,
-    Prihvata: Boolean
+    Prihvata: Boolean,
+    ImeDeteta:String,
+    PrezimeDeteta: String
 })
 const ProfesorSchema = new Schema({
-    Ime:String,
-    Prezime:String,
-    Email:String,
-    Predmet:String,
-    Razredni: Boolean,
-    Pol:String,
-    Odeljenja: [OdeljenjeSchema],
-    OdeljenjaRazredni:[OdeljenjeSchema],
-    Zahtevi: [NaCekanjuSchema]
+    ime:String,
+    prezime:String,
+    email:String,
+    predmet:String,
+    razredni: Boolean,
+    odeljenja: [OdeljenjeSchema],
+    odeljenjaRazredni:[OdeljenjeSchema],
+    zahtevi: [NaCekanjuSchema],
+    pol: String
 });
 
 const Profesor = mongoose.model('Profesor',ProfesorSchema);

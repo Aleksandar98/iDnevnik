@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import UcenikPage from './Ucenik/UcenikPage';
 import ProfesorPage from './Profesor/ProfesorPage';
+import RegisterForm from "./RegisterForm";
 
 class PreviewPage extends Component{
     constructor(props) {
@@ -20,6 +21,9 @@ class PreviewPage extends Component{
             }
             if(this.props.response.type === "profesor"){
                 return <ProfesorPage podaci={this.props.response}/>
+            }
+            if(this.props.response.type === "admin"){
+                return <RegisterForm/>
             }
         return <h1>Neka greska</h1>
         }

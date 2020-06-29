@@ -16,9 +16,10 @@ class Ocene extends Component {
             tip: "srednja",
             razred: 0,
             zakljuceneSve: false,
-            prosek: "/"
+            prosek: "/",
+            idDeteta: null,
+            Roditelj:null
         }
-        //this.componentDidMount = this.componentDidMount.bind(this);
         this.changePolugodiste = this.changePolugodiste.bind(this);
         this.changeRazred = this.changeRazred.bind(this);
         //this.IzvuciDete = this.IzvuciDete.bind(this);
@@ -59,7 +60,9 @@ class Ocene extends Component {
         return li;
     }
     
-   componentDidMount () {
+    componentDidMount() {
+        this.getRoditelj();
+
     var today = new Date();
     var mm = String(today.getMonth() + 1);
     if (mm > 0 && mm < 9)
@@ -88,25 +91,29 @@ class Ocene extends Component {
     
     getRoditelj() {
        
-        // if (this.props.infoKorisnika.username != null)
-        // {
-        //     axios.post('http://localhost:5000/vratiRoditelja', { email: this.props.infoKorisnika.username })
-        //     .then(res => this.setState({ idDeteta: res.data.Deca }))
-        // .catch(err => console.log(err))
-        // }
-
+       
         if (this.props.infoKorisnika.username != null && this.props.infoKorisnika.type == "ucenik")
         {
             axios.post('http://localhost:5000/vratiDete', { email: this.props.infoKorisnika.username })
-                .then(res => this.setState({ idDeteta: res.data._id }))
+                .then(res => {
+                    this.setState({ idDeteta: res.data._id })
+                    this.getDete();
+                })
                 .catch(err => console.log(err))
         }
 
         else if (this.props.infoKorisnika.username != null)
         {
             axios.post('http://localhost:5000/vratiRoditelja', { email: this.props.infoKorisnika.username })
-            .then(res => this.setState({ idDeteta: res.data.Deca }))
-        .catch(err => console.log(err))
+                .then(res => {
+                    this.setState({ idDeteta: res.data.Deca })
+                    this.getDete();
+                })
+                .catch(err => console.log(err))
+            
+                fetch("http://localhost:5000/Roditelj/GetRoditeljByEmail/" + this.props.infoKorisnika.username)
+                .then(res => res.json()
+                    .then(json => { this.setState({ Roditelj: json }) }))
         }
     }
 
@@ -119,9 +126,9 @@ class Ocene extends Component {
     render() {
 
         // this.IzvuciDete();
-        this.getRoditelj();
-        console.log(this.state.idDeteta);
-        this.getDete();
+        // this.getRoditelj();
+        // console.log(this.state.idDeteta);
+        // this.getDete();
         
         if (!this.state.response[0].Predmeti) {
             return <span>Loading...</span>;

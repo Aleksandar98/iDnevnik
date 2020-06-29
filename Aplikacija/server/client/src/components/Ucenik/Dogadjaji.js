@@ -108,7 +108,7 @@ class Dogadjaji extends Component {
 
         let dogadjaji = this.state.response[0].Dogadjaji;
         this.sort(dogadjaji);
-        let trList = dogadjaji.map(dog => <tr><td>{dog.Datum}</td><td>{dog.Tekst}</td></tr>)
+        let trList = dogadjaji.map(dog => <tr><td className="redDatum">{dog.Datum}</td><td>{dog.Tekst}</td></tr>)
 
         return (
             <div className="MT">

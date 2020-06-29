@@ -47,14 +47,13 @@ class Header extends Component{
                     {this.props.response.type == "ucenik" ?   <li ><a href="/Forum" title="Forum">FORUM</a></li> : null}
                   
                     <li><a href="/Izostanci" title="Izostanci">IZOSTANCI</a></li>
-                    <li ><a href="/Vladanje" title="Vladanje">VLADANJE</a></li>
+                    {/* <li ><a href="/Vladanje" title="Vladanje">VLADANJE</a></li> */}
                     <li ><a href="/Raspored" title="Raspored">RASPORED CASOVA</a></li>
-                    <li ><a href="/Dogadjaji" title="Dogadjaji">DOGADJAJI</a></li>
+                    <li ><a href="/Dogadjaji" title="Dogadjaji">RODITELJSKI SASTANCI</a></li>
                 </ul>
                     
                 <ul className="nav navbar-nav navbar-right">
-                    <li><a href="/InfoiKontakt"><span className="glyphicon glyphicon-user"></span> {this.props.response ? (" " + this.props.response.username.substring(0, this.props.response.username.indexOf('@'))) : ""}</a></li>
-                    {/* {this.props.response.type=="ucenik" || this.props.response.type=="roditelj" ?<li><a href="/InfoiKontakt"><span className="glyphicon glyphicon-info-sign"></span> Informacije</a></li> : null} */}
+                <li><a href="/InfoiKontakt"><span className="glyphicon glyphicon-user"></span> {this.props.response ? (" " + this.props.response.username.substring(0, this.props.response.username.indexOf('@'))) : ""}</a></li>
                 {/* <li><a><span className="glyphicon glyphicon-user"></span> {this.props.ucenik ? this.props.response.type : ""}</a></li> */}
                    {this.renderContent()}
                     <li><a href="/PromenaLozinke"><span className="glyphicon glyphicon-cog"></span> Promena lozinke</a></li>

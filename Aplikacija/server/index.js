@@ -9,8 +9,8 @@ const webpush = require("web-push");
 const path = require("path");
 const flash = require('express-flash');
 const Roditelj = require('./models/Roditelj');
-const Profesor = require('./models/Profesor');
 const Ucenik = require('./models/Ucenik');
+const Profesor = require('./models/Profesor');
 //const Administrator = require('./Models/Administrator');
 
 //dodaj cripto async i nodemailer
@@ -95,7 +95,7 @@ Roditelj.create({
     }
     
     })*/
-    Profesor
+    
 
 
 
@@ -148,6 +148,77 @@ User.register(new User({username: req.body.username,type: req.body.type}),req.bo
         res.redirect("http://localhost:3000/preview"); 
     })
 })
+if(req.body.type == "ucenik"){
+
+
+const Ime = req.body.ime;
+const Prezime = req.body.prezime;
+const Jmbg = req.body.jmbg;
+const DatumRodjenja = req.body.datumrodjenja;
+const Adresa = req.body.adresa;
+const Email = req.body.username;
+const Razred = req.body.razred;
+const Odeljenje = req.body.odeljenje;
+const Vladanje = req.body.vladanje;
+const Napomene = req.body.napomene;
+const Dogadjaji = req.body.dogadjaji;
+//if(Razred == 1)
+const Raspored =
+[
+  {Predmeti:["Srpski","Engleski","Matematika","Istorija","Fizicko","Hemija"],Dan:"Ponedeljak"},
+  {Predmeti:["Srpski","Engleski","Matematika","Istorija","Fizicko","Hemija"],Dan:"Utorak"},
+  {Predmeti:["Srpski","Engleski","Matematika","Istorija","Fizicko","Hemija"],Dan:"Sreda"},
+  {Predmeti:["Srpski","Engleski","Matematika","Istorija","Fizicko","Hemija"],Dan:"Cetvrtak"},
+  {Predmeti:["Srpski","Engleski","Matematika","Istorija","Fizicko","Hemija"],Dan:"Petak"}
+
+]
+const Izostanci = req.body.izostanci;
+const Predmeti =
+[
+{Naziv:"Istorija",Ocene:[],ZakljucnaOcena:[]},
+{Naziv:"Engleski",Ocene:[],ZakljucnaOcena:[]},
+{Naziv:"Informatika",Ocene:[],ZakljucnaOcena:[]},
+{Naziv:"Vladanje",Ocene:[],ZakljucnaOcena:[]}
+]
+const Post = req.body.post;
+const Pol = req.body.pol;
+const Prosek = req.body.prosek;
+const Razredni = req.body.razredni;
+const noviUcenik = new Ucenik({Ime, Prezime, Jmbg, DatumRodjenja, Adresa, Email, Razred, Odeljenje, Vladanje, Napomene, Dogadjaji, Raspored, Izostanci, Predmeti, Post,Prosek,Razredni,Pol});
+noviUcenik.save()
+.then( () => res.json("Dodali smo ucenika u bazu!"))
+.catch(err => res.status(400).json('Error: ' + err));
+}
+if(req.body.type == "roditelj"){
+  let RoditeljModel = require('./models/Roditelj');
+  
+  const Ime = req.body.ime;
+  const Prezime = req.body.prezime;
+  const Email = req.body.username;
+  const Telefon = req.body.Telefon;
+  const Deca = req.body.idDeteta;
+  const Pol = req.body.Pol;
+
+  let noviRoditelj = new RoditeljModel(Ime,Prezime,Email,Telefon,Deca,Pol);
+  let saved =  noviRoditelj.save();
+}
+if(req.body.type == "profesor"){
+
+  const ime = req.body.ime;
+  const prezime = req.body.prezime;
+  const email = req.body.email;
+  const predmet = req.body.predmet;
+  const razredni = req.body.razredni;
+  const pol = req.body.pol;
+  const odeljenja = req.body.odeljenja;
+  const odeljenjaRazredni = req.body.odeljenjaRazredni ;
+  const zahtevi = req.body.zahtevi;
+  let prof = new Profesor({ime,prezime,email,predmet,razredni,odeljenja,zahtevi,pol});
+  console.log(req);
+  prof.save()
+  .then(() => res.json(prof))
+  .catch(err => res.status(400).json('Error: ' + err));
+}
 })
 
 app.post("/login",passport.authenticate("local",{
@@ -187,14 +258,41 @@ app.post("/resetpass",(req,res)=>{
 
 
 const UcenikControl = require("./controllers/Ucenik1Controller");
-app.get("/Zdravko", UcenikControl.all);
+// app.get("/Zdravko", UcenikControl.all);
 app.get("/Dete/:_id", UcenikControl.findById);
 app.get("/DeteEmail/:Email", UcenikControl.findByEmail);
 
 const RoditeljControl = require("./controllers/RoditeljController");
 app.get("/Roditelj", RoditeljControl.all);
 app.get("/Roditelj/:Email", RoditeljControl.findByEmail);
+app.get("/nadjiPrekoDeteta/:idDeteta", RoditeljControl.nadjiPrekoDeteta);
 app.get("/Roditelj/GetRoditeljByEmail/:Email", RoditeljControl.findByEmail);
+
+
+app.post("/posaljiMejl",function(req,res){
+
+  console.log(req.body.mejlRoditelja);
+
+  const stmpTransport = nodemailer.createTransport({
+    service: 'Gmail',
+    auth:{
+        user:'aleksandar19981@gmail.com',
+        pass:'jaigramikariam.'
+    }
+});
+const mailOptions = {
+    to:req.body.mejlRoditelja,
+    from:'aleksandar19981@gmail.com',
+    subject: 'Obavestenje iz skole',
+    text: req.body.tekstPoruke
+};
+stmpTransport.sendMail(mailOptions, function(err) {
+    console.log('mail sent');
+    console.log("POSLAT MAILL");
+    console.log(err);
+    //done(err, 'done');
+  });
+})
 
 app.post('/vratiRoditelja', (req, res) => {
   Roditelj.find({ Email: req.body.email }, (err, result) => {
@@ -369,7 +467,6 @@ const ucenikRouter = require('./controllers/UcenikController');
 
 app.use('/profesori', profesorRouter);
 app.use('/ucenici', ucenikRouter);
-// app.get('/Profesor/:id',profesorRouter);
   
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
