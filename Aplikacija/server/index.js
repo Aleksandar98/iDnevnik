@@ -18,7 +18,7 @@ const async = require("async");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 
-mongoose.connect("mongodb+srv://aleksandar:databasetest@cluster0-k3chi.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true  }).then(() => {
+mongoose.connect("mongodb+srv:"------", { useNewUrlParser: true, useUnifiedTopology: true  }).then(() => {
     console.log("Connected to Database");
     }).catch((err) => {
         console.log("Not Connected to Database ERROR! ", err);
