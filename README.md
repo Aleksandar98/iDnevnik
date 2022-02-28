@@ -10,11 +10,11 @@ Logovanje roditelja na portal:
 ![6](https://user-images.githubusercontent.com/76208264/155980723-38b9afb1-0788-4f73-a702-d564656d89d7.png)
 ![7](https://user-images.githubusercontent.com/76208264/155980727-1db33201-0b55-4999-92ad-9c330b5398f5.png)
 ![8](https://user-images.githubusercontent.com/76208264/155980734-25ddb593-0374-4e34-bfe4-51eab2811463.png)
-
-Logovanje ucenika na portal:
 ![9](https://user-images.githubusercontent.com/76208264/155980737-3ff52cd7-ff32-4cd0-b95a-950f25ce4982.png)
 ![10](https://user-images.githubusercontent.com/76208264/155980738-74eb5def-bf65-48e8-9d77-356d429be438.png)
 ![11](https://user-images.githubusercontent.com/76208264/155980740-a171ed7a-4768-4d60-af19-2e3b57a4ee04.png)
+
+Logovanje ucenika na portal:
 ![12](https://user-images.githubusercontent.com/76208264/155980742-2abb3086-7911-4383-ba7e-3eadc45f1ab2.png)
 ![13](https://user-images.githubusercontent.com/76208264/155980745-d81a5fb0-cf57-4dad-843b-71dfde95dd9c.png)
 ![14](https://user-images.githubusercontent.com/76208264/155980804-1c5c94b7-8cab-41bd-98da-3db7235b1460.png)
